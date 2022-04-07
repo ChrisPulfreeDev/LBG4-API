@@ -1,10 +1,17 @@
 #!/bin/bash
 # ask which port should be used tom access app from web browser (external)
-echo "Which Port should be used from web browser (8080 is default):"
-read VMPORT
-# ask which port should be used internally by the conatiner
-echo "Which Port should the conatainer run on (8080 is default):"
-read CONTAINERPORT
+let vmPort=$1
+let containerPort=$2
+if [$vmPort -eq ""]
+then 
+	$vmPort=8080
+fi
+if [$containerPort -eq ""]
+then
+	$containerPort=8080
+fi
+echo $vmPort
+echo $containerPort 
 # go to image directory
 cd ~/LBG4-API
 # output list of running containers to the console 
@@ -18,8 +25,12 @@ docker rmi mea-project
 npm install
 npm test
 # build mea-image
-docker build -t mea-project .
+# docker build -t mea-project .
+$ docker build -t mea-project:v2 .
+# push to GCR (added in Sprint 3 step 3 of project)
+$ docker tag mea-project:v2 gcr.io/lbg-210322/mea-project:v2
+$ docker push gcr.io/lbg-210322/mea-project:v2
 # run image in container (note --env PORT will override Dockerfile ENV PORT=5000)
-docker run --name mea-app-c1 --rm -d -p$VMPORT:$CONTAINERPORT --env PORT=$CONTAINERPORT mea-project
+docker run --name mea-app-c1 --rm -d -p$vmPort:$containerPort --env PORT=$containerPort mea-project
 # show running iamges (should include mea-app-c1 on port entered
 docker ps
