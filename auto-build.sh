@@ -27,7 +27,7 @@ npm test
 # build mea-image
 # docker build -t mea-project .          # this was Sprint 1 & 2 build command - replaced by V2 build below
 $ docker build -t mea-project:v2 .
-# push to GCR (added in Sprint 3 step 3 of project)
+# push to GCR (added in Sprint 3 step 3 of project).
 $ docker tag mea-project:v2 gcr.io/lbg-210322/mea-project:v2
 $ docker push gcr.io/lbg-210322/mea-project:v2
 # run image in container (note --env PORT will override Dockerfile ENV PORT=5000)
